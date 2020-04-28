@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/questions.dart';
 
 void main() => runApp(Quizzler());
 
@@ -7,10 +8,10 @@ class Quizzler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey.shade900,
+        backgroundColor: Colors.grey[900],
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: QuizPage(),
           ),
         ),
@@ -25,66 +26,149 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+
+//  List<String> questions = [
+//    'You can lead a cow down stairs but not up stairs.',
+//    'Approximately one quarter of human bones are in the feet.',
+//    'A slug\'s blood is green.',
+//  ];
+//  List<bool> answers = [
+//    false,
+//    true,
+//    true,
+//  ];
+//
+//  Question q1 = Question(
+//    q: 'You can lead a cow down stairs but not up stairs.',
+//    a: false,
+//  );
+
+  List<Question> questionBank = [
+    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
+    Question(
+        q: 'Approximately one quarter of human bones are in the feet.',
+        a: true),
+    Question(q: 'A slug\'s blood is green.', a: true),
+  ];
+
+  int questionNo = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        //Questions
         Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questionBank[questionNo].question,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 25.0,
                   color: Colors.white,
+                  fontSize: 25.0,
                 ),
               ),
             ),
           ),
         ),
+        //True Button
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: FlatButton(
-              textColor: Colors.white,
               color: Colors.green,
               child: Text(
                 'True',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.0,
+                  fontSize: 25.0,
                 ),
               ),
               onPressed: () {
                 //The user picked true.
+                if (questionBank[questionNo].answer == true) {
+//                  scoreKeeper.add(
+//                    Icon(
+//                      Icons.check,
+//                      color: Colors.green,
+//                    ),
+//                  );
+                  print('right');
+                } else {
+//                  scoreKeeper.add(
+//                    Icon(
+//                      Icons.close,
+//                      color: Colors.red,
+//                    ),
+//                  );
+                  print('wrong');
+                }
+                setState(() {
+                  if (questionBank.length - 1 != questionNo) {
+                    questionNo++;
+                    print(questionNo);
+                  } else {
+                    questionNo = 0;
+                  }
+                });
               },
             ),
           ),
         ),
+        //False Button
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: FlatButton(
               color: Colors.red,
               child: Text(
                 'False',
                 style: TextStyle(
-                  fontSize: 20.0,
                   color: Colors.white,
+                  fontSize: 22.0,
                 ),
               ),
               onPressed: () {
                 //The user picked false.
+                if (questionBank[questionNo].answer == false) {
+//                  scoreKeeper.add(
+//                    Icon(
+//                      Icons.check,
+//                      color: Colors.green,
+//                    ),
+//                  );
+                  print('right');
+                } else {
+//                  scoreKeeper.add(
+//                    Icon(
+//                      Icons.close,
+//                      color: Colors.red,
+//                    ),
+//                  );
+                  print('wrong');
+                }
+                setState(() {
+                  if (questionBank.length - 1 != questionNo) {
+                    questionNo++;
+                    print(questionNo);
+                  } else {
+                    questionNo = 0;
+                  }
+                });
               },
             ),
           ),
         ),
         //TODO: Add a Row here as your score keeper
+        //ScoreKeeper
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }
